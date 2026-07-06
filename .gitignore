@@ -1,0 +1,17 @@
+# JMeter results & generated reports
+results/
+reports/
+*.jtl
+*.log
+jmeter.log
+
+# Downloaded JMeter binaries (if extracted locally)
+apache-jmeter-*/
+apache-jmeter-*.tgz
+
+# JMeter GUI backup/temp files
+*.jmx.bak
+
+# OS
+.DS_Store
+Thumbs.db
