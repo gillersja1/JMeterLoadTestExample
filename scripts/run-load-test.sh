@@ -21,7 +21,7 @@ TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 RESULTS_DIR="results"
 REPORT_DIR="reports/${TIMESTAMP}"
 
-mkdir -p "$RESULTS_DIR"
+mkdir -p "$RESULTS_DIR" "reports"
 
 if ! command -v jmeter &> /dev/null; then
   echo "Error: 'jmeter' is not on your PATH." >&2

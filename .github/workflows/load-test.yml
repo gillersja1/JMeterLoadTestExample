@@ -52,7 +52,7 @@ jobs:
 
       - name: Run load test
         run: |
-          mkdir -p results
+          mkdir -p results reports
           ./apache-jmeter-${JMETER_VERSION}/bin/jmeter -n \
             -t test-plans/reqres-api-load-test.jmx \
             -l results/results.jtl \
