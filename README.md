@@ -23,6 +23,13 @@ between them to more realistically simulate user pacing.
 > own staging/test environment by changing the `BASE_DOMAIN` user-defined
 > variable in the Test Plan element.
 
+> **Want to run this at cloud scale instead of locally?** See
+> [AzureLoadTestingExample](../AzureLoadTestingExample) in this portfolio —
+> it reuses this exact `.jmx` file, but runs it through Azure's managed
+> Load Testing service (part of [Azure App Testing](https://azure.microsoft.com/en-us/products/app-testing))
+> instead of a local JMeter install, with horizontal scaling via engine
+> instances and YAML-defined failure criteria.
+
 ## Project structure
 
 ```
