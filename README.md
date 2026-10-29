@@ -99,10 +99,20 @@ jmeter -n -t test-plans/reqres-api-load-test.jmx -l results.jtl \
 It downloads and caches JMeter, runs the test in CLI mode, and uploads both
 the raw `.jtl` results and the generated HTML report as build artifacts.
 
+The job **fails** if any performance threshold is breached. The limits match
+the `failureCriteria` in AzureLoadTestingExample:
+
+| Metric | Limit |
+|---|---|
+| Average response time | ≤ 1000 ms |
+| p95 response time | ≤ 2000 ms |
+| Error rate | ≤ 10% |
+
+The results appear as a table in the run's job summary.
+
 ## Possible extensions
 
 - Add a CSV Data Set Config element to drive requests with data-driven parameters
-- Add pass/fail thresholds (e.g. via the `jmeter-maven-plugin` or a script that parses the `.jtl` for error rate / p95 latency and fails the CI job if exceeded)
 - Add a Backend Listener to stream real-time metrics to InfluxDB + Grafana
 - Add distributed/remote testing across multiple JMeter load-generation nodes for higher throughput
 - Swap in [Taurus](https://gettaurus.org/) as a higher-level wrapper around this same `.jmx` file for cleaner CI configuration

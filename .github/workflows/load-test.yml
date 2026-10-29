@@ -61,6 +61,22 @@ jobs:
             -Jrampup="${{ github.event.inputs.rampup || '10' }}" \
             -Jloops="${{ github.event.inputs.loops || '5' }}"
 
+      # Same pass/fail criteria as AzureLoadTestingExample's failureCriteria.
+      # JMeter's dashboard reports pct2ResTime as the 95th percentile by default.
+      - name: Check performance thresholds
+        run: |
+          stats=reports/html-report/statistics.json
+          avg=$(jq '.Total.meanResTime' "$stats")
+          p95=$(jq '.Total.pct2ResTime' "$stats")
+          err=$(jq '.Total.errorPct' "$stats")
+          echo "| Metric | Value | Limit |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Avg response time | ${avg} ms | 1000 ms |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| p95 response time | ${p95} ms | 2000 ms |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Error rate | ${err}% | 10% |" >> "$GITHUB_STEP_SUMMARY"
+          jq -e '.Total.meanResTime <= 1000 and .Total.pct2ResTime <= 2000 and .Total.errorPct <= 10' "$stats" > /dev/null \
+            || { echo "::error::Performance thresholds breached (avg=${avg}ms p95=${p95}ms errors=${err}%)"; exit 1; }
+
       - name: Upload raw results (.jtl)
         if: always()
         uses: actions/upload-artifact@v4
