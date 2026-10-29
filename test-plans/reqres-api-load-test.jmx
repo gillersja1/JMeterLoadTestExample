@@ -9,7 +9,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="BASE_DOMAIN" elementType="Argument">
             <stringProp name="Argument.name">BASE_DOMAIN</stringProp>
-            <stringProp name="Argument.value">reqres.in</stringProp>
+            <stringProp name="Argument.value">${__P(host,reqres.in)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -35,7 +35,8 @@
 
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
           <stringProp name="HTTPSampler.domain">${BASE_DOMAIN}</stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.protocol">${__P(protocol,https)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(port,)}</stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout">5000</stringProp>
           <stringProp name="HTTPSampler.response_timeout">10000</stringProp>

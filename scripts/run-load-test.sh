@@ -12,10 +12,17 @@ set -euo pipefail
 # Examples:
 #   ./scripts/run-load-test.sh              # defaults: 10 threads, 10s ramp-up, 5 loops
 #   ./scripts/run-load-test.sh 50 20 10      # 50 threads, 20s ramp-up, 10 loops each
+#
+# Targets the local mock API by default (start it first with
+# `node mock-api/server.js`). Override with environment variables, e.g.:
+#   TARGET_HOST=reqres.in TARGET_PROTOCOL=https TARGET_PORT= ./scripts/run-load-test.sh 2 5 1
 
 THREADS="${1:-10}"
 RAMPUP="${2:-10}"
 LOOPS="${3:-5}"
+TARGET_HOST="${TARGET_HOST-localhost}"
+TARGET_PROTOCOL="${TARGET_PROTOCOL-http}"
+TARGET_PORT="${TARGET_PORT-8080}"
 
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 RESULTS_DIR="results"
@@ -30,7 +37,7 @@ if ! command -v jmeter &> /dev/null; then
   exit 1
 fi
 
-echo "Running load test: threads=$THREADS rampup=${RAMPUP}s loops=$LOOPS"
+echo "Running load test against ${TARGET_PROTOCOL}://${TARGET_HOST}${TARGET_PORT:+:$TARGET_PORT}: threads=$THREADS rampup=${RAMPUP}s loops=$LOOPS"
 echo ""
 
 jmeter -n \
@@ -39,7 +46,10 @@ jmeter -n \
   -e -o "$REPORT_DIR" \
   -Jthreads="$THREADS" \
   -Jrampup="$RAMPUP" \
-  -Jloops="$LOOPS"
+  -Jloops="$LOOPS" \
+  -Jhost="$TARGET_HOST" \
+  -Jprotocol="$TARGET_PROTOCOL" \
+  -Jport="$TARGET_PORT"
 
 echo ""
 echo "Done."
