@@ -35,12 +35,10 @@ environment (your own staging API, for example):
 | `protocol` | `https` | `http` |
 | `port` | *(protocol default)* | `8080` |
 
-> **Want to run this at cloud scale instead of locally?** See
-> [AzureLoadTestingExample](../AzureLoadTestingExample) in this portfolio —
-> it reuses this exact `.jmx` file, but runs it through Azure's managed
-> Load Testing service (part of [Azure App Testing](https://azure.microsoft.com/en-us/products/app-testing))
-> instead of a local JMeter install, with horizontal scaling via engine
-> instances and YAML-defined failure criteria.
+> **Want to see the same test written as code?** See
+> [K6LoadTestExample](https://github.com/gillersja1/K6LoadTestExample) in this
+> portfolio: it load-tests the same mock API with Grafana k6, using a
+> JavaScript test script and thresholds defined in the script itself.
 
 ## Project structure
 
@@ -120,8 +118,7 @@ jmeter -n -t test-plans/reqres-api-load-test.jmx -l results.jtl \
 It starts the mock API, downloads and caches JMeter, runs the test in CLI mode, and uploads both
 the raw `.jtl` results and the generated HTML report as build artifacts.
 
-The job **fails** if any performance threshold is breached. The limits match
-the `failureCriteria` in AzureLoadTestingExample:
+The job **fails** if any performance threshold is breached:
 
 | Metric | Limit |
 |---|---|

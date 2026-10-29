@@ -76,7 +76,7 @@ jobs:
             -Jrampup="${{ github.event.inputs.rampup || '10' }}" \
             -Jloops="${{ github.event.inputs.loops || '5' }}"
 
-      # Same pass/fail criteria as AzureLoadTestingExample's failureCriteria.
+      # Pass/fail criteria; see the README's CI/CD section.
       # JMeter's dashboard reports pct2ResTime as the 95th percentile by default.
       - name: Check performance thresholds
         run: |
