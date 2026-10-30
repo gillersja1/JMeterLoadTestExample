@@ -76,6 +76,15 @@ jobs:
             -Jrampup="${{ github.event.inputs.rampup || '10' }}" \
             -Jloops="${{ github.event.inputs.loops || '5' }}"
 
+      - name: Send test results to Grafana
+        if: always()
+        uses: gillersja1/test-results-otel@v1
+        with:
+          results: results/results.jtl
+          suite: load
+          otlp-endpoint: ${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}
+          otlp-headers: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+
       # Pass/fail criteria; see the README's CI/CD section.
       # JMeter's dashboard reports pct2ResTime as the 95th percentile by default.
       - name: Check performance thresholds
